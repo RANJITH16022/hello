@@ -1,26 +1,39 @@
-<script>
-const docID = "1fmE8zXPFWwioae6uZuD4-_q4_uqSqWBavwviHknUu8g";
-const url = `https://docs.google.com/document/d/${docID}/export?format=html`;
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>12 Physics Exam</title>
 
-fetch(url)
-  .then(response => response.text())
-  .then(html => {
+<style>
+body {
+  margin: 0;
+  background-color: #0a192f;
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+}
 
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(html, "text/html");
-    const content = doc.body.innerHTML;
+.container {
+  width: 80%;
+  max-width: 900px;
+  margin: 40px 0;
+  padding: 30px;
+  border: 3px solid #4fc3f7;
+  color: white;
+  background-color: #112240;
+}
 
-    document.getElementById("content").innerHTML = content;
+button {
+  padding: 10px 20px;
+  margin-bottom: 20px;
+  background-color: #4fc3f7;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+}
 
-    MathJax.typeset();
-  })
-  .catch(() => {
-    document.getElementById("content").innerText =
-      "Unable to load question paper.";
-  });
-</script>
-.container h1, 
-.container h2, 
+.container h1,
+.container h2,
 .container h3 {
   color: #4fc3f7;
 }
@@ -33,3 +46,64 @@ fetch(url)
   max-width: 100%;
   margin: 15px 0;
 }
+
+/* Print Style */
+@media print {
+  button {
+    display: none;
+  }
+
+  body {
+    background: white;
+  }
+
+  .container {
+    border: none;
+    color: black;
+    background: white;
+  }
+}
+</style>
+
+<!-- MathJax -->
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['$', '$']], displayMath: [['$$', '$$']] }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+</head>
+<body>
+
+<div class="container">
+  <button onclick="window.print()">Download PDF</button>
+  <div id="content">Loading question paper...</div>
+</div>
+
+<script>
+const docID = "1fmE8zXPFWwioae6uZuD4-_q4_uqSqWBavwviHknUu8g";
+const url = `https://docs.google.com/document/d/${docID}/export?format=html`;
+
+fetch(url)
+  .then(response => response.text())
+  .then(html => {
+
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, "text/html");
+
+    document.getElementById("content").innerHTML = doc.body.innerHTML;
+
+    // Re-render math after content loads
+    if (window.MathJax) {
+      MathJax.typeset();
+    }
+  })
+  .catch(() => {
+    document.getElementById("content").innerText =
+      "Unable to load question paper.";
+  });
+</script>
+
+</body>
+</html>
