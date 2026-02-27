@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Link Page</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: #0a192f; /* dark navy blue */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: Arial, sans-serif;
+    }
+
+    .box {
+      border: 3px solid #4fc3f7; /* light blue border */
+      padding: 30px;
+      width: 80%;
+      max-width: 800px;
+      color: white;
+      font-size: 22px;
+      text-align: center;
+      word-wrap: break-word;
+    }
+
+    .updated {
+      margin-top: 15px;
+      font-size: 14px;
+      opacity: 0.7;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="box">
+    <div id="content">Loading...</div>
+    <div class="updated" id="updated"></div>
+  </div>
+
+  <script>
+    const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRemBNmi9dlrfwM_Sc9wk1oc_cgtLFa7kQ9xOb95R9uIJMdI6PaVkrAG_3QqUyJfMYd7KWSVOLDbyst//gviz/tq?tqx=out:json";
+
+    fetch(sheetURL)
+      .then(response => response.text())
+      .then(data => {
+        const json = JSON.parse(data.substring(47).slice(0, -2));
+        const value = json.table.rows[0].c[0].v;
+
+        document.getElementById("content").innerText = value;
+
+        const now = new Date();
+        document.getElementById("updated").innerText =
+          "Last refreshed: " + now.toLocaleString();
+      })
+      .catch(error => {
+        document.getElementById("content").innerText =
+          "Unable to load data.";
+      });
+  </script>
+
+</body>
+</html>
