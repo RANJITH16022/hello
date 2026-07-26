@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maths Bootcamp for Class 12 Physics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#16233d;
+    --navy-light:#233a5e;
+    --teal:#2a9d8f;
+    --amber:#e0973a;
+    --paper:#f6f4ee;
+    --paper-line:#dfd9c8;
+    --ink:#1f2530;
+    --ink-soft:#4b5567;
+    --card:#ffffff;
+    --danger:#c1543c;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    background-image:
+      linear-gradient(var(--paper-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--paper-line) 1px, transparent 1px);
+    background-size:28px 28px;
+    color:var(--ink);
+    font-family:'Source Sans 3', sans-serif;
+    font-size:16px;
+    line-height:1.6;
+  }
+  h1,h2,h3,.display{ font-family:'Fraunces', serif; }
+  .formula, code, .mono { font-family:'JetBrains Mono', monospace; }
+
+  /* Layout */
+  .wrap{ display:flex; max-width:1300px; margin:0 auto; min-height:100vh; }
+  nav.side{
+    width:250px; flex:0 0 250px;
+    background:var(--navy);
+    color:#dfe6f0;
+    position:sticky; top:0; height:100vh;
+    padding:28px 18px;
+    overflow-y:auto;
+  }
+  nav.side .brand{
+    font-family:'Fraunces', serif;
+    font-size:1.15rem; font-weight:700; color:#fff;
+    margin-bottom:4px;
+  }
+  nav.side .brand small{ display:block; font-family:'Source Sans 3',sans-serif; font-weight:400; color:#9db0cc; font-size:0.78rem; margin-top:4px;}
+  nav.side ul{ list-style:none; padding:0; margin:22px 0 0; }
+  nav.side li{ margin-bottom:2px; }
+  nav.side a{
+    display:flex; gap:10px; align-items:baseline;
+    color:#c3cfe3; text-decoration:none; font-size:0.88rem;
+    padding:8px 10px; border-radius:6px;
+    transition:background .15s, color .15s;
+  }
+  nav.side a .num{ font-family:'JetBrains Mono',monospace; color:var(--amber); font-size:0.75rem; flex:0 0 20px;}
+  nav.side a:hover{ background:var(--navy-light); color:#fff; }
+
+  main{ flex:1; padding:44px 56px 120px; max-width:900px; }
+
+  header.hero{
+    margin-bottom:50px;
+    border-bottom:3px solid var(--navy);
+    padding-bottom:28px;
+  }
+  header.hero .eyebrow{
+    font-family:'JetBrains Mono',monospace; letter-spacing:.08em; text-transform:uppercase;
+    font-size:0.75rem; color:var(--teal); font-weight:600;
+  }
+  header.hero h1{ font-size:2.6rem; margin:10px 0 14px; color:var(--navy); line-height:1.15;}
+  header.hero p{ color:var(--ink-soft); font-size:1.05rem; max-width:640px; }
+  .howto{
+    margin-top:22px; background:var(--card); border:1px solid var(--paper-line);
+    border-left:4px solid var(--teal); padding:16px 20px; border-radius:4px; font-size:0.92rem;
+  }
+  .howto b{color:var(--navy);}
+
+  section.topic{
+    margin-bottom:64px;
+    scroll-margin-top:20px;
+  }
+  section.topic .tag{
+    font-family:'JetBrains Mono',monospace; color:var(--amber); font-weight:600; font-size:0.85rem;
+  }
+  section.topic h2{
+    color:var(--navy); font-size:1.9rem; margin:4px 0 18px;
+    display:flex; align-items:baseline; gap:12px;
+  }
+  section.topic h2 .idx{ color:var(--teal); font-size:1.3rem; }
+
+  .card{
+    background:var(--card); border:1px solid var(--paper-line);
+    border-radius:8px; padding:22px 26px; margin-bottom:18px;
+    box-shadow:0 1px 2px rgba(22,35,61,0.04);
+  }
+  .concept p{ margin:0 0 12px; }
+  .concept p:last-child{ margin-bottom:0; }
+
+  .rule-box{
+    background:#fbfaf5; border:1.5px dashed var(--navy-light);
+    border-radius:6px; padding:16px 20px; margin:16px 0;
+    font-family:'JetBrains Mono',monospace; font-size:1rem; color:var(--navy);
+  }
+  .rule-box .label{ font-family:'Source Sans 3',sans-serif; font-size:0.72rem; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-soft); display:block; margin-bottom:8px; font-weight:600;}
+  .rule-box div{ padding:3px 0; }
+
+  .physics-link{
+    background:var(--navy); color:#eef2f8;
+    border-radius:8px; padding:18px 22px; margin:18px 0;
+    position:relative; overflow:hidden;
+  }
+  .physics-link::before{
+    content:"⚡ PHYSICS CONNECTION";
+    font-family:'JetBrains Mono',monospace; font-size:0.7rem; letter-spacing:.08em;
+    color:var(--amber); display:block; margin-bottom:8px; font-weight:600;
+  }
+  .physics-link .f{ font-family:'JetBrains Mono',monospace; color:#fff; background:rgba(255,255,255,0.08); padding:2px 6px; border-radius:4px;}
+
+  .example{
+    border-left:4px solid var(--amber); padding:14px 20px; margin:16px 0;
+    background:#fffaf1;
+  }
+  .example .label{ font-weight:600; color:var(--amber); font-size:0.8rem; text-transform:uppercase; letter-spacing:.05em; display:block; margin-bottom:8px;}
+  .example .step{ margin:4px 0; }
+
+  .practice{
+    background:#f2f7f6; border:1px solid #cfe4e0; border-radius:8px;
+    padding:20px 24px; margin-top:20px;
+  }
+  .practice .label{
+    font-family:'Fraunces',serif; font-weight:600; color:var(--teal); font-size:1.05rem; margin-bottom:12px; display:block;
+  }
+  .practice ol{ padding-left:22px; margin:0; }
+  .practice li{ margin-bottom:14px; }
+  .practice li:last-child{ margin-bottom:0; }
+  details.ans{ margin-top:6px; }
+  details.ans summary{
+    cursor:pointer; color:var(--teal); font-weight:600; font-size:0.85rem;
+    list-style:none; display:inline-flex; align-items:center; gap:6px;
+  }
+  details.ans summary::-webkit-details-marker{ display:none; }
+  details.ans summary::before{ content:"▸"; transition:transform .15s; }
+  details.ans[open] summary::before{ transform:rotate(90deg); }
+  details.ans .ans-body{
+    margin-top:8px; padding:10px 14px; background:#fff; border-radius:6px;
+    border:1px solid #cfe4e0; font-family:'JetBrains Mono',monospace; font-size:0.92rem; color:var(--navy);
+  }
+
+  table.ref{ border-collapse:collapse; width:100%; margin:14px 0; font-size:0.92rem;}
+  table.ref th, table.ref td{ border:1px solid var(--paper-line); padding:8px 12px; text-align:center;}
+  table.ref th{ background:var(--navy); color:#fff; font-weight:600;}
+  table.ref td.angle{ background:#fbfaf5; font-weight:600; color:var(--navy);}
+
+  .final-sheet{ background:var(--navy); color:#eef2f8; border-radius:10px; padding:32px 36px; margin-top:20px;}
+  .final-sheet h3{ color:var(--amber); margin-top:0;}
+  .final-sheet .grid{ display:grid; grid-template-columns:1fr 1fr; gap:10px 30px; }
+  .final-sheet .grid div{ padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.12); font-family:'JetBrains Mono',monospace; font-size:0.9rem;}
+  @media(max-width:720px){ .final-sheet .grid{ grid-template-columns:1fr; } }
+
+  footer{ text-align:center; color:var(--ink-soft); font-size:0.85rem; padding:30px 0 10px; }
+
+  @media(max-width:900px){
+    nav.side{ display:none; }
+    main{ padding:30px 22px 100px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<nav class="side">
+  <div class="brand">Maths Bootcamp<small>for Class 12 Physics · PCB+CS batch</small></div>
+  <ul>
+    <li><a href="#intro"><span class="num">00</span> How to use this</a></li>
+    <li><a href="#algebra"><span class="num">01</span> Algebra basics</a></li>
+    <li><a href="#powers"><span class="num">02</span> Powers &amp; exponents</a></li>
+    <li><a href="#quadratic"><span class="num">03</span> Quadratic equations</a></li>
+    <li><a href="#trig"><span class="num">04</span> Trigonometry basics</a></li>
+    <li><a href="#vectors"><span class="num">05</span> Vectors &amp; components</a></li>
+    <li><a href="#sigma"><span class="num">06</span> Summation (Σ)</a></li>
+    <li><a href="#graphs"><span class="num">07</span> Graphs: slope &amp; area</a></li>
+    <li><a href="#diff"><span class="num">08</span> Differentiation</a></li>
+    <li><a href="#integ"><span class="num">09</span> Integration</a></li>
+    <li><a href="#cheat"><span class="num">10</span> Formula cheat-sheet</a></li>
+  </ul>
+</nav>
+
+<main>
+
+  <header class="hero" id="intro">
+    <div class="eyebrow">Session plan · from scratch</div>
+    <h1>The Maths You Actually Need for Class 12 Physics</h1>
+    <p>Ten short blocks, in the order you should teach them. Every rule is followed by one worked example and 4–6 practice questions, so you can check understanding before moving on. Nothing here assumes prior comfort with maths.</p>
+    <div class="howto">
+      <b>How to run this session:</b> Go block by block. Don't move to the next block until the student can do the practice questions for the current one unaided — everything after Block 07 (graphs) depends on Blocks 01–07 being solid. Answers are hidden under "Show answer" — get the student to attempt on paper first.
+    </div>
+  </header>
+
+  <!-- 01 ALGEBRA -->
+  <section class="topic" id="algebra">
+    <div class="tag">Block 01</div>
+    <h2><span class="idx">§</span> Algebra Basics — Combining &amp; Simplifying Terms</h2>
+    <div class="card concept">
+      <p>In physics, letters like <span class="mono">u, v, a, t, m</span> stand for real quantities (speed, time, mass...). "Doing algebra" just means combining these quantities correctly — same idea as combining apples with apples.</p>
+      <p><b>Like terms</b> are terms with the exact same letter part. Only like terms can be added or subtracted directly.</p>
+      <div class="rule-box">
+        <span class="label">Rule</span>
+        <div>3x + 5x = 8x&nbsp;&nbsp;&nbsp;(like terms → add the numbers in front, "coefficients")</div>
+        <div>3x + 5y  → cannot combine. Stays 3x + 5y</div>
+        <div>7m² + 2m² = 9m²&nbsp;&nbsp;&nbsp;(m² and m² are like terms)</div>
+        <div>7m² + 2m  → cannot combine (different powers of m)</div>
+      </div>
+      <p><b>Transposition</b> — moving a term across the "=" sign flips its sign (+ becomes −, and vice versa). This is how we rearrange a physics formula to solve for a different quantity.</p>
+      <div class="example">
+        <span class="label">Worked Example</span>
+        <div class="step">Solve for <span class="mono">v</span> in: <span class="mono">v − u = at</span></div>
+        <div class="step">Move −u to the other side → sign flips to +u</div>
+        <div class="step"><span class="mono">v = u + at</span> — this is the first equation of motion!</div>
+      </div>
+      <div class="physics-link">Rearranging <span class="f">v = u + at</span> to find <span class="f">t = (v − u) / a</span> is transposition — you'll do this constantly in Kinematics, Newton's Laws, and Current Electricity.</div>
+    </div>
+    <div class="practice">
+      <span class="label">Practice — Block 01</span>
+      <ol>
+        <li>Simplify: 4x + 9x − 2x
+          <details class="ans"><summary>Show answer</summary><div class="ans-body">11x</div></details>
+        </li>
+        <li>Simplify: 5a² + 3a − 2a² + 7a
+          <details class="ans"><summary>Show answer</summary><div class="ans-body">3a² + 10a</div></details>
+        </li>
+        <li>Rearrange <span class="mono">s = ut + ½at²</span> to isolate <span class="mono">u</span> (treat ½at² as one block).
+          <details class="ans"><summary>Show answer</summary><div class="ans-body">u = (s − ½at²) / t</div></details>
+        </li>
+        <li>Rearrange <span class="mono">F = ma</span> to find <span class="mono">a</span>.
+          <details class="ans"><summary>Show answer</summary><div class="ans-body">a = F / m</div></details>
+        </li>
+        <li>Solve for x: 3x + 7 = 22
+          <details class="ans"><summary>Show answer</summary><div class="ans-body">3x = 15 → x = 5</div></details>
+        </li>
+        <li>Rearrange <span class="mono">V = IR</span> to find <span class="mono">R</span>.
+          <details class="ans"><summary>Show answer</summary><div class="ans-body">R = V / I</div></details>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 02 POWERS -->
+  <section class="topic" id="powers">
+    <div class="tag">Block 02</div>
+    <h2><span class="idx">§</span> Laws of Powers &amp; Exponents</h2>
+    <div class="card concept">
+      <p>A power just means "multiply this many times": <span class="mono">a³ = a × a × a</span>. Physics constantly uses powers — for units (m², m³), for formulas (v² = u² + 2as), and for very large/small numbers (10⁸, 10⁻¹⁹).</p>
+      <div class="rule-box">
+        <span class="label">The Four Rules You Must Know Cold</span>
+        <div>1. Multiplying same base → ADD the powers: aᵐ × aⁿ = aᵐ⁺ⁿ</div>
+        <div>2. Dividing same base → SUBTRACT the powers: aᵐ ÷ aⁿ = aᵐ⁻ⁿ</div>
+        <div>3. Power of a power → MULTIPLY the powers: (aᵐ)ⁿ = aᵐⁿ</div>
+        <div>4. Negative power → flip to denominator: a⁻ⁿ = 1 / aⁿ</div>
+        <div>Also: a⁰ = 1 (anything to the power 0 is 1) &nbsp;&nbsp; a^(1/2) = √a</div>
+      </div>
+      <div class="example">
+        <span class="label">Worked Example</span>
+        <div class="step">Simplify: (2 × 10³) × (3 × 10⁵)</div>
+        <div class="step">Multiply the plain numbers: 2 × 3 = 6</div>
+        <div class="step">Add the powers of 10: 10³ × 10⁵ = 10⁸</div>
+        <div class="step">Answer: 6 × 10⁸</div>
+      </div>
+      <div class="physics-link">Scientific notation (like <span class="f">3 × 10⁸ m/s</span> for the speed of light, or <span class="f">1.6 × 10⁻¹⁹ C</span> for electron charge) is used on almost every page of your Physics book. If powers aren't automatic, every numerical problem becomes slow.</div>
+    </div>
+    <div class="practice">
+      <span class="label">Practice — Block 02</span>
+      <ol>
+        <li>Simplify: 10⁴ × 10³
+          <details class="ans"><summary>Show answer</summary><div class="ans-body">10⁷</div></details>
+        </li>
+        <li>Simplify: 10⁶ ÷ 10²
+          <details class="ans"><summary>Show answer</summary><div class="ans-body">10⁴</div></details>
+        </li>
+        <li>Simplify: (10³)²
+          <details class="ans"><summary>Show answer</summary><div class="ans-body">10⁶</div></details>
+        </li>
+        <li>Write 0.000045 in scientific notation.
+          <details class="ans"><summary>Show answer</summary><div class="ans-body">4.5 × 10⁻⁵</div></details>
+        </li>
+        <li>Simplify: (4 × 10⁵) × (2 × 10⁻²)
+          <details class="ans"><summary>Show answer</summary><div class="ans-body">8 × 10³</div></details>
+        </li>
+        <li>Simplify: m³ × m⁻¹ ÷ m²
+          <details class="ans"><summary>Show answer</summary><div class="ans-body">m^(3−1−2) = m⁰ = 1</div></details>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 03 QUADRATIC -->
+  <section class="topic" id="quadratic">
+    <div class="tag">Block 03</div>
+    <h2><span class="idx">§</span> Quadratic Equations</h2>
+    <div class="card concept">
+      <p>A quadratic equation has a squared term: <span class="mono">ax² + bx + c = 0</span>. In physics, these show up whenever you solve kinematics equations for time, or projectile problems for range/height.</p>
+      <div class="rule-box">
+        <span class="label">The Quadratic Formula</span>
+        <div>For ax² + bx + c = 0:</div>
+        <div>x = [ −b ± √(b² − 4ac) ] / 2a</div>
+        <div>This always gives 2 answers — in physics, reject the one that's negative time or physically impossible.</div>
+      </div>
+      <div class="example">
+        <span class="label">Worked Example</span>
+        <div class="step">A ball's height: s = 20t − 5t². Find t when s = 15.</div>
+        <div class="step">15 = 20t − 5t² → 5t² − 20t + 15 = 0 → divide by 5 → t² − 4t + 3 = 0</div>
+        <div class="step">Using formula: a=1, b=−4, c=3 → t = [4 ± √(16−12)] / 2 = [4 ± 2] / 2</div>
+        <div class="step">t = 3 or t = 1 → both valid (ball passes height 15 m twice — going up and coming down)</div>
+      </div>
+      <div class="physics-link">Equations like <span class="f">s = ut + ½at²</span> become quadratic in <span class="f">t</span> whenever you're asked "at what time does the object reach height s?" — very common in projectile motion questions.</div>
+    </div>
+    <div class="practice">
+      <span class="label">Practice — Block 03</span>
+      <ol>
+        <li>Solve: x² − 5x + 6 = 0
+          <details class="ans"><summary>Show answer</summary><div class="ans-body">(x−2)(x−3)=0 → x = 2 or x = 3</div></details>
+        </li>
+        <li>Solve: t² − 7t + 10 = 0
+          <details class="ans"><summary>Show answer</summary><div class="ans-body">t = 2 or t = 5</div></details>
+        </li>
+        <li>Solve using the formula: 2x² + 3x − 2 = 0
+          <details class="ans"><summary>Show answer</summary><div class="ans-body">x = [−3 ± √(9+16)]/4 = [−3±5]/4 → x = 0.5 or x = −2</div></details>
+        </li>
+        <li>A stone is thrown: s = 40t − 5t². Find t when s = 60 m.
+          <details class="ans"><summary>Show answer</summary><div class="ans-body">5t²−40t+60=0 → t²−8t+12=0 → t=2 or t=6</div></details>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 04 TRIG -->
+  <section class="topic" id="trig">
+    <div class="tag">Block 04</div>
+    <h2><span class="idx">§</span> Trigonometry Basics</h2>
+    <div class="card concept">
+      <p>Trigonometry connects angles to ratios of sides in a right-angled triangle. Physics uses it to break a slanted force, velocity, or displacement into horizontal and vertical parts.</p>
+      <div class="rule-box">
+        <span class="label">SOH-CAH-TOA (for a right triangle, angle θ)</span>
+        <div>sin θ = Opposite / Hypotenuse</div>
+        <div>cos θ = Adjacent / Hypotenuse</div>
+        <div>tan θ = Opposite / Adjacent = sin θ / cos θ</div>
+      </div>
+      <table class="ref">
+        <tr><th>θ</th><td class="angle">0°</td><td class="angle">30°</td><td class="angle">45°</td><td class="angle">60°</td><td class="angle">90°</td></tr>
+        <tr><th>sin θ</th><td>0</td><td>1/2</td><td>1/√2</td><td>√3/2</td><td>1</td></tr>
+        <tr><th>cos θ</th><td>1</td><td>√3/2</td><td>1/√2</td><td>1/2</td><td>0</td></tr>
+        <tr><th>tan θ</th><td>0</td><td>1/√3</td><td>1</td><td>√3</td><td>∞</td></tr>
+      </table>
+      <p><b>Small-angle approximation:</b> for very small θ (in radians), sin θ ≈ θ and tan θ ≈ θ. Used in simple pendulum / SHM chapters.</p>
+      <div class="example">
+        <span class="label">Worked Example</span>
+        <div class="step">A force of 10 N acts at 30° above the horizontal. Find its horizontal and vertical parts.</div>
+        <div class="step">Horizontal: F cos30° = 10 × (√3/2) = 8.66 N</div>
+        <div class="step">Vertical: F sin30° = 10 × (1/2) = 5 N</div>
+      </div>
+      <div class="physics-link">Resolving vectors, projectile motion (range = u²sin2θ/g), inclined planes, and AC circuits (phasors) all lean on this table. Memorise it — don't re-derive it every time.</div>
+    </div>
+    <div class="practice">
+      <span class="label">Practice — Block 04</span>
+      <ol>
+        <li>A ladder makes 60° with the ground and is 4 m long. Find its horizontal distance from the wall (cos60° = 1/2).
+          <details class="ans"><summary>Show answer</summary><div class="ans-body">4 × cos60° = 4 × 0.5 = 2 m</div></details>
+        </li>
+        <li>Resolve a velocity of 20 m/s at 45° into horizontal and vertical components.
+          <details class="ans"><summary>Show answer</summary><div class="ans-body">Both = 20 × (1/√2) ≈ 14.14 m/s</div></details>
+        </li>
+        <li>If sin θ = 1/2, what is θ?
+          <details class="ans"><summary>Show answer</summary><div class="ans-body">30°</div></details>
+        </li>
+        <li>A block on an incline of 30° — write the component of gravity (mg) along the incline.
+          <details class="ans"><summary>Show answer</summary><div class="ans-body">mg sin30° = mg/2</div></details>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 05 VECTORS -->
+  <section class="topic" id="vectors">
+    <div class="tag">Block 05</div>
+    <h2><span class="idx">§</span> Vectors &amp; Components</h2>
+    <div class="card concept">
+      <p>A vector has both size (magnitude) and direction — like velocity or force. A scalar has only size — like mass or time. Vectors can't just be added like plain numbers unless they point the same way.</p>
+      <div class="rule-box">
+        <span class="label">Core Rules</span>
+        <div>Magnitude of vector (x, y): |V| = √(x² + y²) — this is just Pythagoras' theorem</div>
+        <div>Adding vectors at right angles: R = √(A² + B²)</div>
+        <div>Components: Vx = V cosθ, &nbsp; Vy = V sinθ (θ measured from x-axis)</div>
+      </div>
+      <div class="example">
+        <span class="label">Worked Example</span>
+        <div class="step">Find the resultant of a 3 N force (east) and a 4 N force (north).</div>
+        <div class="step">These are perpendicular → R = √(3² + 4²) = √25 = 5 N</div>
+      </div>
+      <div class="physics-link">Every "resolve the forces" or "find the resultant velocity" question — Laws of Motion, Projectile Motion, Work-Energy — is really Pythagoras + the sinθ/cosθ table from Block 04.</div>
+    </div>
+    <div class="practice">
+      <span class="label">Practice — Block 05</span>
+      <ol>
+        <li>Find the magnitude of a vector with components (6, 8).
+          <details class="ans"><summary>Show answer</summary><div class="ans-body">√(36+64) = √100 = 10</div></details>
+        </li>
+        <li>Two forces, 5 N and 12 N, act at right angles. Find the resultant.
+          <details class="ans"><summary>Show answer</summary><div class="ans-body">√(25+144) = √169 = 13 N</div></details>
+        </li>
+        <li>A velocity of 10 m/s acts at 60° to the horizontal. Find the vertical component. (sin60° = √3/2)
+          <details class="ans"><summary>Show answer</summary><div class="ans-body">10 × √3/2 ≈ 8.66 m/s</div></details>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 06 SIGMA -->
+  <section class="topic" id="sigma">
+    <div class="tag">Block 06</div>
+    <h2><span class="idx">§</span> Summation — The Σ (Sigma) Symbol</h2>
+    <div class="card concept">
+      <p>Σ is just shorthand for "add up all of these." Instead of writing a long list of terms, we write one line telling the reader what to add and over what range.</p>
+      <div class="rule-box">
+        <span class="label">Reading Σ</span>
+        <div>Σ (i = 1 to n) i &nbsp;means&nbsp; 1 + 2 + 3 + ... + n</div>
+        <div>Σ (i = 1 to 4) i² &nbsp;means&nbsp; 1² + 2² + 3² + 4² = 1+4+9+16 = 30</div>
+        <div>Σ mᵢxᵢ &nbsp;means&nbsp; m₁x₁ + m₂x₂ + m₃x₃ + ... (add each mass times its position)</div>
+      </div>
+      <div class="example">
+        <span class="label">Worked Example</span>
+        <div class="step">Centre of mass formula: Xcm = Σ(mᵢxᵢ) / Σmᵢ</div>
+        <div class="step">For 2 masses: m₁=2kg at x₁=0m, m₂=3kg at x₂=5m</div>
+        <div class="step">Σmᵢxᵢ = (2×0) + (3×5) = 15 &nbsp;&nbsp; Σmᵢ = 2+3 = 5</div>
+        <div class="step">Xcm = 15/5 = 3 m</div>
+      </div>
+      <div class="physics-link">Σ appears directly in the Centre of Mass / System of Particles chapter, and conceptually behind every "total force," "total charge," or "total work done by many forces" statement.</div>
+    </div>
+    <div class="practice">
+      <span class="label">Practice — Block 06</span>
+      <ol>
+        <li>Write out and evaluate: Σ (i = 1 to 5) i
+          <details class="ans"><summary>Show answer</summary><div class="ans-body">1+2+3+4+5 = 15</div></details>
+        </li>
+        <li>Evaluate: Σ (i = 1 to 3) i²
+          <details class="ans"><summary>Show answer</summary><div class="ans-body">1+4+9 = 14</div></details>
+        </li>
+        <li>Three masses: 1 kg at x=0, 2 kg at x=2, 3 kg at x=4. Find Xcm.
+          <details class="ans"><summary>Show answer</summary><div class="ans-body">Σmx = 0+4+12=16, Σm=6 → Xcm = 16/6 ≈ 2.67 m</div></details>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 07 GRAPHS -->
+  <section class="topic" id="graphs">
+    <div class="tag">Block 07</div>
+    <h2><span class="idx">§</span> Graphs — Slope &amp; Area (the bridge to calculus)</h2>
+    <div class="card concept">
+      <p>Before differentiation and integration make sense as symbols, they need to make sense as pictures. This block is the bridge.</p>
+      <div class="rule-box">
+        <span class="label">Two Big Ideas</span>
+        <div>1. SLOPE of a graph = "how steep" = rise / run = Δy / Δx</div>
+        <div>2. AREA under a graph = the product of the two axes, added up over the range</div>
+      </div>
+      <div class="example">
+        <span class="label">Worked Example — position-time graph</span>
+        <div class="step">A car's position goes from 10 m to 50 m in 4 s. Slope = (50−10)/4 = 10 m/s</div>
+        <div class="step">Slope of position-time graph = velocity. This is exactly what differentiation calculates.</div>
+      </div>
+      <div class="example">
+        <span class="label">Worked Example — velocity-time graph</span>
+        <div class="step">A car moves at constant 20 m/s for 5 s. Area under graph = 20 × 5 = 100 m</div>
+        <div class="step">Area under velocity-time graph = distance travelled. This is exactly what integration calculates.</div>
+      </div>
+      <div class="physics-link">Once a student accepts "slope = rate of change" and "area = total accumulated," differentiation and integration stop being mysterious symbols — they're just slope and area for curves instead of straight lines.</div>
+    </div>
+    <div class="practice">
+      <span class="label">Practice — Block 07</span>
+      <ol>
+        <li>A position-time graph goes from 0 m to 60 m in 3 s (straight line). Find the velocity.
+          <details class="ans"><summary>Show answer</summary><div class="ans-body">60/3 = 20 m/s</div></details>
+        </li>
+        <li>A velocity-time graph is a horizontal line at 15 m/s for 10 s. Find distance travelled.
+          <details class="ans"><summary>Show answer</summary><div class="ans-body">Area = 15 × 10 = 150 m</div></details>
+        </li>
+        <li>A velocity-time graph rises in a straight line from 0 to 20 m/s in 4 s. Find the distance travelled (hint: area of triangle = ½ × base × height).
+          <details class="ans"><summary>Show answer</summary><div class="ans-body">½ × 4 × 20 = 40 m</div></details>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 08 DIFFERENTIATION -->
+  <section class="topic" id="diff">
+    <div class="tag">Block 08</div>
+    <h2><span class="idx">§</span> Differentiation — Finding the Rate of Change</h2>
+    <div class="card concept">
+      <p>Differentiation finds the slope of a curve at every point — i.e. how fast one quantity changes with another. In physics, we almost always differentiate <b>with respect to time</b>.</p>
+      <div class="rule-box">
+        <span class="label">The Power Rule (the only rule you need for most of Class 12)</span>
+        <div>d/dx (xⁿ) = n·xⁿ⁻¹ &nbsp;&nbsp;→ bring the power down, subtract 1 from the power</div>
+        <div>d/dx (constant) = 0 &nbsp;&nbsp;(a constant never changes, so its rate of change is 0)</div>
+        <div>d/dx (k·xⁿ) = k·n·xⁿ⁻¹ &nbsp;&nbsp;(constants just tag along, multiplied through)</div>
+        <div>Sum rule: d/dx (f + g) = d/dx(f) + d/dx(g) &nbsp;&nbsp;(differentiate term by term)</div>
+      </div>
+      <div class="rule-box">
+        <span class="label">Two extra results used in Class 12</span>
+        <div>d/dx (sin x) = cos x</div>
+        <div>d/dx (cos x) = −sin x</div>
+      </div>
+      <div class="example">
+        <span class="label">Worked Example</span>
+        <div class="step">Position: x = 5t² + 2t + 3. Find velocity v = dx/dt.</div>
+        <div class="step">d/dt(5t²) = 5×2×t¹ = 10t</div>
+        <div class="step">d/dt(2t) = 2 &nbsp;&nbsp; d/dt(3) = 0</div>
+        <div class="step">v = 10t + 2</div>
+      </div>
+      <div class="physics-link">v = dx/dt (velocity is rate of change of position) and a = dv/dt (acceleration is rate of change of velocity) are used everywhere: Kinematics, SHM, Electromagnetic Induction (EMF = −dΦ/dt), and AC current.</div>
+    </div>
+    <div class="practice">
+      <span class="label">Practice — Block 08</span>
+      <ol>
+        <li>Differentiate: y = x³
+          <details class="ans"><summary>Show answer</summary><div class="ans-body">dy/dx = 3x²</div></details>
+        </li>
+        <li>Differentiate: y = 4x² + 3x + 7
+          <details class="ans"><summary>Show answer</summary><div class="ans-body">dy/dx = 8x + 3</div></details>
+        </li>
+        <li>x = 3t² − 4t + 1. Find velocity v = dx/dt.
+          <details class="ans"><summary>Show answer</summary><div class="ans-body">v = 6t − 4</div></details>
+        </li>
+        <li>v = 6t − 4 (from above). Find acceleration a = dv/dt.
+          <details class="ans"><summary>Show answer</summary><div class="ans-body">a = 6 (constant)</div></details>
+        </li>
+        <li>Differentiate: y = 5 sin x
+          <details class="ans"><summary>Show answer</summary><div class="ans-body">dy/dx = 5 cos x</div></details>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 09 INTEGRATION -->
+  <section class="topic" id="integ">
+    <div class="tag">Block 09</div>
+    <h2><span class="idx">§</span> Integration — Adding Up Infinitely Small Pieces</h2>
+    <div class="card concept">
+      <p>Integration is the reverse of differentiation. Where differentiation finds slope, integration finds the area under a curve — i.e. it "un-does" a rate to recover the total.</p>
+      <div class="rule-box">
+        <span class="label">The Power Rule for Integration</span>
+        <div>∫ xⁿ dx = xⁿ⁺¹ / (n+1) + C &nbsp;&nbsp;→ add 1 to the power, then divide by the new power</div>
+        <div>∫ k dx = kx + C &nbsp;&nbsp;(a constant, integrated, becomes k times x)</div>
+        <div>"+C" is added because when you differentiate any constant, you get 0 — so integration can't tell what constant was originally there. In physics, C is fixed using initial conditions.</div>
+      </div>
+      <div class="rule-box">
+        <span class="label">Definite Integral (used for area between two limits)</span>
+        <div>∫ (a to b) f(x) dx = [F(x)] from a to b = F(b) − F(a)</div>
+      </div>
+      <div class="example">
+        <span class="label">Worked Example</span>
+        <div class="step">Velocity: v = 4t + 2. Find displacement x = ∫v dt from t=0 to t=3.</div>
+        <div class="step">∫(4t + 2) dt = 4t²/2 + 2t = 2t² + 2t</div>
+        <div class="step">At t=3: 2(9) + 2(3) = 18 + 6 = 24 m &nbsp;&nbsp; At t=0: 0</div>
+        <div class="step">Displacement = 24 − 0 = 24 m</div>
+      </div>
+      <div class="physics-link">x = ∫v dt and v = ∫a dt recover displacement/velocity from rates — used in Kinematics with variable acceleration, Work done by a variable force (W = ∫F dx), and charge from variable current (q = ∫I dt).</div>
+    </div>
+    <div class="practice">
+      <span class="label">Practice — Block 09</span>
+      <ol>
+        <li>Integrate: ∫ x² dx
+          <details class="ans"><summary>Show answer</summary><div class="ans-body">x³/3 + C</div></details>
+        </li>
+        <li>Integrate: ∫ (3x + 5) dx
+          <details class="ans"><summary>Show answer</summary><div class="ans-body">3x²/2 + 5x + C</div></details>
+        </li>
+        <li>v = 2t + 3. Find displacement from t=0 to t=2 using x = ∫v dt.
+          <details class="ans"><summary>Show answer</summary><div class="ans-body">∫(2t+3)dt = t²+3t → at t=2: 4+6=10; at t=0: 0 → displacement = 10 m</div></details>
+        </li>
+        <li>Force F = 2x (varies with position). Find work done W = ∫F dx from x=0 to x=3.
+          <details class="ans"><summary>Show answer</summary><div class="ans-body">∫2x dx = x² → at x=3: 9; at x=0: 0 → W = 9 J</div></details>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 10 CHEAT SHEET -->
+  <section class="topic" id="cheat">
+    <div class="tag">Block 10</div>
+    <h2><span class="idx">§</span> One-Page Formula Cheat-Sheet</h2>
+    <div class="final-sheet">
+      <h3>Keep this page open during physics homework</h3>
+      <div class="grid">
+        <div>aᵐ × aⁿ = aᵐ⁺ⁿ</div>
+        <div>aᵐ ÷ aⁿ = aᵐ⁻ⁿ</div>
+        <div>(aᵐ)ⁿ = aᵐⁿ</div>
+        <div>a⁻ⁿ = 1/aⁿ , a⁰ = 1</div>
+        <div>x = [−b ± √(b²−4ac)] / 2a</div>
+        <div>sin30°=1/2, cos30°=√3/2, tan45°=1</div>
+        <div>|V| = √(x² + y²)</div>
+        <div>Vx = V cosθ, Vy = V sinθ</div>
+        <div>Σ(i=1→n) i = sum of the list</div>
+        <div>slope of graph = rate of change</div>
+        <div>area under graph = total accumulated</div>
+        <div>d/dx(xⁿ) = n·xⁿ⁻¹</div>
+        <div>d/dx(sin x) = cos x</div>
+        <div>d/dx(cos x) = −sin x</div>
+        <div>∫xⁿ dx = xⁿ⁺¹/(n+1) + C</div>
+        <div>∫(a→b) f(x)dx = F(b) − F(a)</div>
+        <div>v = dx/dt , a = dv/dt</div>
+        <div>x = ∫v dt , v = ∫a dt</div>
+      </div>
+    </div>
+  </section>
+
+  <footer>Built for a one-on-one session · work through in order · revisit any block the moment a physics chapter needs it again.</footer>
+
+</main>
+</div>
+</body>
+</html>
