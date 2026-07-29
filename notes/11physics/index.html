@@ -3,321 +3,147 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Class 11 Physics Formulae - First 4 Chapters (Latest NCERT)</title>
+    <title>Class 11 Physics Practice - Kinematics</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
-        :root {
-            --primary-color: #2c3e50;
-            --secondary-color: #3498db;
-            --accent-color: #e74c3c;
-            --bg-color: #f8f9fa;
-            --card-bg: #ffffff;
-            --text-color: #333333;
-            --border-color: #e0e0e0;
+        .solution-content {
+            display: none;
         }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            line-height: 1.6;
-            margin: 0;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        header {
-            text-align: center;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            padding: 30px;
-            border-radius: 10px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-
-        header h1 {
-            margin: 0 0 10px 0;
-            font-size: 2.2rem;
-        }
-
-        header p {
-            margin: 0;
-            font-size: 1.1rem;
-            opacity: 0.9;
-        }
-
-        .chapter-card {
-            background: var(--card-bg);
-            border-radius: 8px;
-            padding: 25px;
-            margin-bottom: 25px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            border-top: 5px solid var(--secondary-color);
-        }
-
-        .chapter-card h2 {
-            color: var(--primary-color);
-            border-bottom: 2px solid var(--border-color);
-            padding-bottom: 10px;
-            margin-top: 0;
-            font-size: 1.5rem;
-        }
-
-        .formula-group {
-            margin-bottom: 20px;
-        }
-
-        .formula-group h3 {
-            font-size: 1.1rem;
-            color: var(--secondary-color);
-            margin-bottom: 8px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-            margin-bottom: 15px;
-        }
-
-        th, td {
-            border: 1px solid var(--border-color);
-            padding: 10px 15px;
-            text-align: left;
-        }
-
-        th {
-            background-color: #f1f4f8;
-            color: var(--primary-color);
-            font-weight: 600;
-        }
-
-        tr:nth-child(even) {
-            background-color: #fafbfc;
-        }
-
-        .math {
-            font-family: 'Cambria Math', 'Times New Roman', serif;
-            font-style: italic;
-            background-color: #f8f9fa;
-            padding: 2px 6px;
-            border-radius: 4px;
-            display: inline-block;
-        }
-
-        .note {
-            font-size: 0.9rem;
-            color: #666;
-            background: #fff8f8;
-            border-left: 3px solid var(--accent-color);
-            padding: 8px 12px;
-            margin-top: 10px;
-        }
-
-        footer {
-            text-align: center;
-            padding: 20px;
-            color: #777;
-            font-size: 0.9rem;
-        }
-
-        @media (max-width: 768px) {
-            body { padding: 10px; }
-            table, th, td { font-size: 0.9rem; }
+        .solution-content.active {
+            display: block;
         }
     </style>
 </head>
-<body>
+<body class="bg-gray-50 text-gray-800 font-sans leading-relaxed">
 
-<div class="container">
-    <header>
-        <h1>Class 11 Physics Formulae</h1>
-        <p>First 4 Chapters According to the Latest Rationalized NCERT Syllabus</p>
+    <header class="bg-blue-600 text-white py-10 shadow-lg">
+        <div class="container mx-auto px-6 text-center">
+            <h1 class="text-4xl font-bold mb-2">Class 11 Physics Practice</h1>
+            <p class="text-xl opacity-90">Motion in a Straight Line & Motion in a Plane</p>
+        </div>
     </header>
 
-    <!-- CHAPTER 1 -->
-    <div class="chapter-card">
-        <h2>Chapter 1: Units and Measurements</h2>
-        <div class="formula-group">
-            <h3>Dimensional Analysis & Error Propagation</h3>
-            <table>
-                <tr>
-                    <th>Concept / Parameter</th>
-                    <th>Formula / Expression</th>
-                </tr>
-                <tr>
-                    <td>Absolute Error</td>
-                    <td><span class="math">&Delta;a_i = |a_{mean} - a_i|</span></td>
-                </tr>
-                <tr>
-                    <td>Mean Absolute Error</td>
-                    <td><span class="math">&Delta;a_{mean} = \frac{|\Delta a_1| + |\Delta a_2| + ... + |\Delta a_n|}{n}</span></td>
-                </tr>
-                <tr>
-                    <td>Relative Error</td>
-                    <td><span class="math">\frac{\Delta a_{mean}}{a_{mean}}</span></td>
-                </tr>
-                <tr>
-                    <td>Percentage Error</td>
-                    <td><span class="math">\delta a = \left(\frac{\Delta a_{mean}}{a_{mean}}\right) \times 100\%</span></td>
-                </tr>
-                <tr>
-                    <td>Error in Sum/Difference (<span class="math">Z = A \pm B</span>)</td>
-                    <td><span class="math">&Delta;Z = \Delta A + \Delta B</span></td>
-                </tr>
-                <tr>
-                    <td>Error in Product/Quotient (<span class="math">Z = \frac{AB}{C^2}</span>)</td>
-                    <td><span class="math">\frac{\Delta Z}{Z} = \frac{\Delta A}{A} + \frac{\Delta B}{B} + 2\frac{\Delta C}{C}</span></td>
-                </tr>
-            </table>
-        </div>
-    </div>
+    <main class="container mx-auto px-6 py-8">
+        
+        <!-- Part 1: Necessary Formulas -->
+        <section class="mb-12">
+            <h2 class="text-3xl font-semibold text-blue-700 border-b-2 border-blue-200 pb-2 mb-6">1. Necessary Formulas</h2>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Straight Line -->
+                <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-blue-500">
+                    <h3 class="text-xl font-bold mb-4">Motion in a Straight Line</h3>
+                    <ul class="space-y-4">
+                        <li><strong>Average Velocity:</strong> \( v_{avg} = \frac{\Delta x}{\Delta t} \)</li>
+                        <li><strong>Instantaneous Velocity:</strong> \( v = \frac{dx}{dt} \)</li>
+                        <li><strong>Equations of Motion (Constant \(a\)):</strong>
+                            <div class="bg-gray-100 p-3 rounded mt-2 text-center">
+                                \( v = u + at \) <br>
+                                \( s = ut + \frac{1}{2}at^2 \) <br>
+                                \( v^2 = u^2 + 2as \)
+                            </div>
+                        </li>
+                        <li><strong>Stopping Distance:</strong> \( d_s = \frac{-u^2}{2a} \)</li>
+                    </ul>
+                </div>
 
-    <!-- CHAPTER 2 -->
-    <div class="chapter-card">
-        <h2>Chapter 2: Motion in a Straight Line</h2>
-        <div class="formula-group">
-            <h3>Kinematic Quantities & Uniform Acceleration Equations</h3>
-            <table>
-                <tr>
-                    <th>Parameter</th>
-                    <th>Formula / Equation</th>
-                </tr>
-                <tr>
-                    <td>Average Velocity</td>
-                    <td><span class="math">v_{avg} = \frac{\Delta x}{\Delta t}</span></td>
-                </tr>
-                <tr>
-                    <td>Instantaneous Velocity</td>
-                    <td><span class="math">v = \frac{dx}{dt}</span></td>
-                </tr>
-                <tr>
-                    <td>Instantaneous Acceleration</td>
-                    <td><span class="math">a = \frac{dv}{dt} = \frac{d^2x}{dt^2}</span></td>
-                </tr>
-                <tr>
-                    <td>First Kinematic Equation</td>
-                    <td><span class="math">v = u + at</span></td>
-                </tr>
-                <tr>
-                    <td>Second Kinematic Equation</td>
-                    <td><span class="math">s = ut + \frac{1}{2}at^2</span></td>
-                </tr>
-                <tr>
-                    <td>Third Kinematic Equation</td>
-                    <td><span class="math">v^2 = u^2 + 2as</span></td>
-                </tr>
-                <tr>
-                    <td>Distance in <span class="math">n^{th}</span> second</td>
-                    <td><span class="math">S_n = u + \frac{a}{2}(2n - 1)</span></td>
-                </tr>
-            </table>
-        </div>
-    </div>
-
-    <!-- CHAPTER 3 -->
-    <div class="chapter-card">
-        <h2>Chapter 3: Motion in a Plane</h2>
-        <div class="formula-group">
-            <h3>Vectors & Projectile Motion</h3>
-            <table>
-                <tr>
-                    <th>Concept</th>
-                    <th>Formula / Expression</th>
-                </tr>
-                <tr>
-                    <td>Resultant Vector Magnitude (Addition)</td>
-                    <td><span class="math">R = \sqrt{A^2 + B^2 + 2AB\cos\theta}</span></td>
-                </tr>
-                <tr>
-                    <td>Direction of Resultant (<span class="math">&alpha;</span> with <span class="math">\vec{A}</span>)</td>
-                    <td><span class="math">\tan\alpha = \frac{B\sin\theta}{A + B\cos\theta}</span></td>
-                </tr>
-                <tr>
-                    <td>Scalar (Dot) Product</td>
-                    <td><span class="math">\vec{A} \cdot \vec{B} = AB\cos\theta</span></td>
-                </tr>
-                <tr>
-                    <td>Vector (Cross) Product</td>
-                    <td><span class="math">|\vec{A} \times \vec{B}| = AB\sin\theta \, \hat{n}</span></td>
-                </tr>
-                <tr>
-                    <td>Projectile Trajectory Equation</td>
-                    <td><span class="math">y = x\tan\theta - \frac{g}{2u^2\cos^2\theta}x^2</span></td>
-                </tr>
-                <tr>
-                    <td>Time of Flight (<span class="math">T</span>)</td>
-                    <td><span class="math">T = \frac{2u\sin\theta}{g}</span></td>
-                </tr>
-                <tr>
-                    <td>Maximum Height (<span class="math">H</span>)</td>
-                    <td><span class="math">H = \frac{u^2\sin^2\theta}{2g}</span></td>
-                </tr>
-                <tr>
-                    <td>Horizontal Range (<span class="math">R</span>)</td>
-                    <td><span class="math">R = \frac{u^2\sin(2\theta)}{g}</span></td>
-                </tr>
-                <tr>
-                    <td>Uniform Circular Motion (Centripetal Acc.)</td>
-                    <td><span class="math">a_c = \frac{v^2}{r} = \omega^2 r</span></td>
-                </tr>
-            </table>
-        </div>
-    </div>
-
-    <!-- CHAPTER 4 -->
-    <div class="chapter-card">
-        <h2>Chapter 4: Laws of Motion</h2>
-        <div class="formula-group">
-            <h3>Force, Momentum, Friction & Dynamics</h3>
-            <table>
-                <tr>
-                    <th>Concept</th>
-                    <th>Formula / Expression</th>
-                </tr>
-                <tr>
-                    <td>Linear Momentum</td>
-                    <td><span class="math">\vec{p} = m\vec{v}</span></td>
-                </tr>
-                <tr>
-                    <td>Newton's Second Law</td>
-                    <td><span class="math">\vec{F}_{net} = \frac{d\vec{p}}{dt} = m\vec{a}</span></td>
-                </tr>
-                <tr>
-                    <td>Impulse</td>
-                    <td><span class="math">J = \vec{F}_{avg} \times \Delta t = \Delta \vec{p}</span></td>
-                </tr>
-                <tr>
-                    <td>Static / Kinetic Friction Force</td>
-                    <td><span class="math">f_s \le \mu_s N, \quad f_k = \mu_k N</span></td>
-                </tr>
-                <tr>
-                    <td>Motion of Object on Level Circular Road</td>
-                    <td><span class="math">v_{max} = \sqrt{\mu_s r g}</span></td>
-                </tr>
-                <tr>
-                    <td>Vehicle on Banked Road (with friction)</td>
-                    <td><span class="math">v = \sqrt{rg \left(\frac{\tan\theta + \mu_s}{1 - \mu_s\tan\theta}\right)}</span></td>
-                </tr>
-                <tr>
-                    <td>Optimum Speed on Banked Road ( frictionless)</td>
-                    <td><span class="math">v_0 = \sqrt{rg\tan\theta}</span></td>
-                </tr>
-            </table>
-            <div class="note">
-                <strong>Note:</strong> Chapter sequencing aligns with the updated/rationalized NCERT Class 11 Physics textbook layout (where Units & Measurements is Ch 1, Motion in a Straight Line is Ch 2, Motion in a Plane is Ch 3, and Laws of Motion is Ch 4).
+                <!-- Motion in a Plane -->
+                <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-green-500">
+                    <h3 class="text-xl font-bold mb-4">Motion in a Plane & Vectors</h3>
+                    <ul class="space-y-4">
+                        <li><strong>Vector Magnitude:</strong> \( |\vec{A}| = \sqrt{A_x^2 + A_y^2} \)</li>
+                        <li><strong>Projectile Motion:</strong>
+                            <div class="bg-gray-100 p-3 rounded mt-2 text-center">
+                                Time of Flight: \( T = \frac{2u \sin\theta}{g} \) <br>
+                                Max Height: \( H = \frac{u^2 \sin^2\theta}{2g} \) <br>
+                                Horizontal Range: \( R = \frac{u^2 \sin 2\theta}{g} \)
+                            </div>
+                        </li>
+                        <li><strong>Centripetal Acceleration:</strong> \( a_c = \frac{v^2}{r} = \omega^2 r \)</li>
+                    </ul>
+                </div>
             </div>
-        </div>
-    </div>
+        </section>
 
-    <footer>
-        <p>Generated for Class 11 Academic Study &bull; NCERT/CBSE Curriculum</p>
+        <!-- Part 2: Practice Questions -->
+        <section>
+            <h2 class="text-3xl font-semibold text-blue-700 border-b-2 border-blue-200 pb-2 mb-6">2. Topic-wise Practice Questions</h2>
+
+            <!-- Topic: Straight Line -->
+            <div class="mb-10">
+                <h3 class="text-2xl font-bold text-gray-700 mb-4 uppercase tracking-wide">Topic A: Motion in a Straight Line</h3>
+                
+                <!-- Q1 -->
+                <div class="bg-white p-6 rounded-lg shadow mb-6 border border-gray-200">
+                    <p class="font-medium text-lg mb-4">Q1. A car travels half the distance with constant velocity \(40 \, \text{km/h}\) and the remaining half with constant velocity \(60 \, \text{km/h}\). Find the average velocity of the car.</p>
+                    <button onclick="toggleSolution('sol1')" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded transition font-semibold">View Solution</button>
+                    <div id="sol1" class="solution-content mt-4 p-4 bg-blue-50 rounded border border-blue-100 italic">
+                        <p><strong>Solution:</strong> Let total distance be \(2x\).<br>
+                        Time for first half \(t_1 = \frac{x}{40}\). Time for second half \(t_2 = \frac{x}{60}\).<br>
+                        \(V_{avg} = \frac{\text{Total Distance}}{\text{Total Time}} = \frac{2x}{\frac{x}{40} + \frac{x}{60}}\)<br>
+                        \(V_{avg} = \frac{2 \times 40 \times 60}{40 + 60} = \frac{4800}{100} = \mathbf{48 \, \text{km/h}}\).</p>
+                    </div>
+                </div>
+
+                <!-- Q2 -->
+                <div class="bg-white p-6 rounded-lg shadow mb-6 border border-gray-200">
+                    <p class="font-medium text-lg mb-4">Q2. The position of an object is given by \(x = 3t^2 + 2t + 5\). Find its instantaneous velocity at \(t = 2 \, \text{s}\).</p>
+                    <button onclick="toggleSolution('sol2')" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded transition font-semibold">View Solution</button>
+                    <div id="sol2" class="solution-content mt-4 p-4 bg-blue-50 rounded border border-blue-100 italic">
+                        <p><strong>Solution:</strong> Velocity \(v = \frac{dx}{dt}\).<br>
+                        \(v = \frac{d}{dt}(3t^2 + 2t + 5) = 6t + 2\).<br>
+                        At \(t = 2\): \(v = 6(2) + 2 = \mathbf{14 \, \text{unit/s}}\).</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Topic: Motion in a Plane -->
+            <div class="mb-10">
+                <h3 class="text-2xl font-bold text-gray-700 mb-4 uppercase tracking-wide">Topic B: Motion in a Plane</h3>
+                
+                <!-- Q3 -->
+                <div class="bg-white p-6 rounded-lg shadow mb-6 border border-gray-200">
+                    <p class="font-medium text-lg mb-4">Q3. A projectile is fired at an angle of \(30^\circ\) with the horizontal with a velocity of \(98 \, \text{m/s}\). Calculate its time of flight. (Take \(g = 9.8 \, \text{m/s}^2\))</p>
+                    <button onclick="toggleSolution('sol3')" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded transition font-semibold">View Solution</button>
+                    <div id="sol3" class="solution-content mt-4 p-4 bg-blue-50 rounded border border-blue-100 italic">
+                        <p><strong>Solution:</strong> \(T = \frac{2u \sin\theta}{g}\)<br>
+                        \(T = \frac{2 \times 98 \times \sin 30^\circ}{9.8} = \frac{2 \times 98 \times 0.5}{9.8}\)<br>
+                        \(T = \frac{98}{9.8} = \mathbf{10 \, \text{seconds}}\).</p>
+                    </div>
+                </div>
+
+                <!-- Q4 -->
+                <div class="bg-white p-6 rounded-lg shadow mb-6 border border-gray-200">
+                    <p class="font-medium text-lg mb-4">Q4. A particle moves in a circle of radius \(5 \, \text{m}\) with a constant speed of \(10 \, \text{m/s}\). What is the magnitude of its centripetal acceleration?</p>
+                    <button onclick="toggleSolution('sol4')" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded transition font-semibold">View Solution</button>
+                    <div id="sol4" class="solution-content mt-4 p-4 bg-blue-50 rounded border border-blue-100 italic">
+                        <p><strong>Solution:</strong> \(a_c = \frac{v^2}{r}\)<br>
+                        \(a_c = \frac{10^2}{5} = \frac{100}{5} = \mathbf{20 \, \text{m/s}^2}\).</p>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <footer class="bg-gray-100 py-6 mt-10">
+        <div class="container mx-auto px-6 text-center text-gray-600 text-sm">
+            NCERT Physics Class 11 Revision Module | Use for academic practice.
+        </div>
     </footer>
-</div>
+
+    <script>
+        function toggleSolution(id) {
+            const solution = document.getElementById(id);
+            if (solution.classList.contains('active')) {
+                solution.classList.remove('active');
+            } else {
+                solution.classList.add('active');
+            }
+        }
+    </script>
 
 </body>
 </html>
