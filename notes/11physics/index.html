@@ -1,149 +1,184 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Class 11 Physics Practice - Kinematics</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <style>
-        .solution-content {
-            display: none;
-        }
-        .solution-content.active {
-            display: block;
-        }
-    </style>
+<meta charset="UTF-8">
+<title>12 Physics Exam - LaTeX Renderer</title>
+
+<!-- KaTeX CSS and JS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+<style>
+body {
+  margin: 0;
+  background-color: #0a192f;
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+}
+
+.container {
+  width: 80%;
+  max-width: 900px;
+  margin: 40px 0;
+  padding: 30px;
+  border: 3px solid #4fc3f7;
+  color: white;
+  background-color: #112240;
+}
+
+button {
+  padding: 10px 20px;
+  margin-bottom: 20px;
+  background-color: #4fc3f7;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  border-radius: 4px;
+}
+
+button:hover {
+  background-color: #29b6f6;
+}
+
+.container h1,
+.container h2,
+.container h3 {
+  color: #4fc3f7;
+}
+
+.container p {
+  line-height: 1.6;
+}
+
+/* Print Style */
+@media print {
+  button {
+    display: none;
+  }
+
+  body {
+    background: white;
+  }
+
+  .container {
+    border: none;
+    color: black;
+    background: white;
+  }
+  
+  .container h1,
+  .container h2,
+  .container h3 {
+    color: #000;
+  }
+}
+
+#loading {
+  text-align: center;
+  padding: 40px;
+  font-size: 1.2em;
+  color: #4fc3f7;
+}
+
+.error {
+  color: #ff6b6b;
+  padding: 20px;
+  border: 1px solid #ff6b6b;
+  border-radius: 4px;
+}
+
+/* Style for math display */
+.math-display {
+  text-align: center;
+  margin: 20px 0;
+  padding: 10px;
+  background: rgba(79, 195, 247, 0.05);
+  border-radius: 4px;
+}
+
+@media print {
+  .math-display {
+    background: #f5f5f5;
+  }
+}
+</style>
 </head>
-<body class="bg-gray-50 text-gray-800 font-sans leading-relaxed">
+<body>
 
-    <header class="bg-blue-600 text-white py-10 shadow-lg">
-        <div class="container mx-auto px-6 text-center">
-            <h1 class="text-4xl font-bold mb-2">Class 11 Physics Practice</h1>
-            <p class="text-xl opacity-90">Motion in a Straight Line & Motion in a Plane</p>
-        </div>
-    </header>
+<div class="container">
+  <button onclick="window.print()">📄 Download PDF</button>
+  <div id="content">
+    <div id="loading">Loading question paper...</div>
+  </div>
+</div>
 
-    <main class="container mx-auto px-6 py-8">
-        
-        <!-- Part 1: Necessary Formulas -->
-        <section class="mb-12">
-            <h2 class="text-3xl font-semibold text-blue-700 border-b-2 border-blue-200 pb-2 mb-6">1. Necessary Formulas</h2>
-            
-            <div class="grid md:grid-cols-2 gap-8">
-                <!-- Straight Line -->
-                <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-blue-500">
-                    <h3 class="text-xl font-bold mb-4">Motion in a Straight Line</h3>
-                    <ul class="space-y-4">
-                        <li><strong>Average Velocity:</strong> \( v_{avg} = \frac{\Delta x}{\Delta t} \)</li>
-                        <li><strong>Instantaneous Velocity:</strong> \( v = \frac{dx}{dt} \)</li>
-                        <li><strong>Equations of Motion (Constant \(a\)):</strong>
-                            <div class="bg-gray-100 p-3 rounded mt-2 text-center">
-                                \( v = u + at \) <br>
-                                \( s = ut + \frac{1}{2}at^2 \) <br>
-                                \( v^2 = u^2 + 2as \)
-                            </div>
-                        </li>
-                        <li><strong>Stopping Distance:</strong> \( d_s = \frac{-u^2}{2a} \)</li>
-                    </ul>
-                </div>
+<script>
+// Your Google Doc ID
+const docID = "1fmE8zXPFWwioae6uZuD4-_q4_uqSqWBavwviHknUu8g";
+const url = `https://docs.google.com/document/d/${docID}/export?format=html`;
 
-                <!-- Motion in a Plane -->
-                <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-green-500">
-                    <h3 class="text-xl font-bold mb-4">Motion in a Plane & Vectors</h3>
-                    <ul class="space-y-4">
-                        <li><strong>Vector Magnitude:</strong> \( |\vec{A}| = \sqrt{A_x^2 + A_y^2} \)</li>
-                        <li><strong>Projectile Motion:</strong>
-                            <div class="bg-gray-100 p-3 rounded mt-2 text-center">
-                                Time of Flight: \( T = \frac{2u \sin\theta}{g} \) <br>
-                                Max Height: \( H = \frac{u^2 \sin^2\theta}{2g} \) <br>
-                                Horizontal Range: \( R = \frac{u^2 \sin 2\theta}{g} \)
-                            </div>
-                        </li>
-                        <li><strong>Centripetal Acceleration:</strong> \( a_c = \frac{v^2}{r} = \omega^2 r \)</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
+async function loadAndRender() {
+  const contentDiv = document.getElementById('content');
+  
+  try {
+    // Fetch the Google Doc as HTML
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const html = await response.text();
 
-        <!-- Part 2: Practice Questions -->
-        <section>
-            <h2 class="text-3xl font-semibold text-blue-700 border-b-2 border-blue-200 pb-2 mb-6">2. Topic-wise Practice Questions</h2>
-
-            <!-- Topic: Straight Line -->
-            <div class="mb-10">
-                <h3 class="text-2xl font-bold text-gray-700 mb-4 uppercase tracking-wide">Topic A: Motion in a Straight Line</h3>
-                
-                <!-- Q1 -->
-                <div class="bg-white p-6 rounded-lg shadow mb-6 border border-gray-200">
-                    <p class="font-medium text-lg mb-4">Q1. A car travels half the distance with constant velocity \(40 \, \text{km/h}\) and the remaining half with constant velocity \(60 \, \text{km/h}\). Find the average velocity of the car.</p>
-                    <button onclick="toggleSolution('sol1')" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded transition font-semibold">View Solution</button>
-                    <div id="sol1" class="solution-content mt-4 p-4 bg-blue-50 rounded border border-blue-100 italic">
-                        <p><strong>Solution:</strong> Let total distance be \(2x\).<br>
-                        Time for first half \(t_1 = \frac{x}{40}\). Time for second half \(t_2 = \frac{x}{60}\).<br>
-                        \(V_{avg} = \frac{\text{Total Distance}}{\text{Total Time}} = \frac{2x}{\frac{x}{40} + \frac{x}{60}}\)<br>
-                        \(V_{avg} = \frac{2 \times 40 \times 60}{40 + 60} = \frac{4800}{100} = \mathbf{48 \, \text{km/h}}\).</p>
-                    </div>
-                </div>
-
-                <!-- Q2 -->
-                <div class="bg-white p-6 rounded-lg shadow mb-6 border border-gray-200">
-                    <p class="font-medium text-lg mb-4">Q2. The position of an object is given by \(x = 3t^2 + 2t + 5\). Find its instantaneous velocity at \(t = 2 \, \text{s}\).</p>
-                    <button onclick="toggleSolution('sol2')" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded transition font-semibold">View Solution</button>
-                    <div id="sol2" class="solution-content mt-4 p-4 bg-blue-50 rounded border border-blue-100 italic">
-                        <p><strong>Solution:</strong> Velocity \(v = \frac{dx}{dt}\).<br>
-                        \(v = \frac{d}{dt}(3t^2 + 2t + 5) = 6t + 2\).<br>
-                        At \(t = 2\): \(v = 6(2) + 2 = \mathbf{14 \, \text{unit/s}}\).</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Topic: Motion in a Plane -->
-            <div class="mb-10">
-                <h3 class="text-2xl font-bold text-gray-700 mb-4 uppercase tracking-wide">Topic B: Motion in a Plane</h3>
-                
-                <!-- Q3 -->
-                <div class="bg-white p-6 rounded-lg shadow mb-6 border border-gray-200">
-                    <p class="font-medium text-lg mb-4">Q3. A projectile is fired at an angle of \(30^\circ\) with the horizontal with a velocity of \(98 \, \text{m/s}\). Calculate its time of flight. (Take \(g = 9.8 \, \text{m/s}^2\))</p>
-                    <button onclick="toggleSolution('sol3')" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded transition font-semibold">View Solution</button>
-                    <div id="sol3" class="solution-content mt-4 p-4 bg-blue-50 rounded border border-blue-100 italic">
-                        <p><strong>Solution:</strong> \(T = \frac{2u \sin\theta}{g}\)<br>
-                        \(T = \frac{2 \times 98 \times \sin 30^\circ}{9.8} = \frac{2 \times 98 \times 0.5}{9.8}\)<br>
-                        \(T = \frac{98}{9.8} = \mathbf{10 \, \text{seconds}}\).</p>
-                    </div>
-                </div>
-
-                <!-- Q4 -->
-                <div class="bg-white p-6 rounded-lg shadow mb-6 border border-gray-200">
-                    <p class="font-medium text-lg mb-4">Q4. A particle moves in a circle of radius \(5 \, \text{m}\) with a constant speed of \(10 \, \text{m/s}\). What is the magnitude of its centripetal acceleration?</p>
-                    <button onclick="toggleSolution('sol4')" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded transition font-semibold">View Solution</button>
-                    <div id="sol4" class="solution-content mt-4 p-4 bg-blue-50 rounded border border-blue-100 italic">
-                        <p><strong>Solution:</strong> \(a_c = \frac{v^2}{r}\)<br>
-                        \(a_c = \frac{10^2}{5} = \frac{100}{5} = \mathbf{20 \, \text{m/s}^2}\).</p>
-                    </div>
-                </div>
-            </div>
-
-        </section>
-    </main>
-
-    <footer class="bg-gray-100 py-6 mt-10">
-        <div class="container mx-auto px-6 text-center text-gray-600 text-sm">
-            NCERT Physics Class 11 Revision Module | Use for academic practice.
-        </div>
-    </footer>
-
-    <script>
-        function toggleSolution(id) {
-            const solution = document.getElementById(id);
-            if (solution.classList.contains('active')) {
-                solution.classList.remove('active');
-            } else {
-                solution.classList.add('active');
-            }
+    // Parse the HTML
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, "text/html");
+    
+    // Get the body content
+    let contentHTML = doc.body.innerHTML;
+    
+    // Process any LaTeX content found in the document
+    // The Google Doc might have LaTeX in various formats
+    
+    // Method 1: Look for text that might contain LaTeX in $$ or $ delimiters
+    // This preserves any LaTeX that might be in the document as plain text
+    
+    // Set the content
+    contentDiv.innerHTML = contentHTML;
+    
+    // Now render any LaTeX using KaTeX
+    // This will find $...$ and $$...$$ in the text content
+    if (window.renderMathInElement) {
+      renderMathInElement(contentDiv, {
+        delimiters: [
+          {left: '$$', right: '$$', display: true},
+          {left: '$', right: '$', display: false},
+          {left: '\\(', right: '\\)', display: false},
+          {left: '\\[', right: '\\]', display: true}
+        ],
+        throwOnError: false,
+        errorCallback: function(error) {
+          console.warn('KaTeX error:', error);
+          // Don't show error messages in the content
+          return null;
         }
-    </script>
+      });
+    }
+    
+  } catch (error) {
+    console.error('Error loading content:', error);
+    contentDiv.innerHTML = `
+      <div class="error">
+        ❌ Unable to load question paper.<br>
+        Error: ${error.message}
+      </div>
+    `;
+  }
+}
+
+// Load when page is ready
+document.addEventListener('DOMContentLoaded', loadAndRender);
+</script>
 
 </body>
 </html>
