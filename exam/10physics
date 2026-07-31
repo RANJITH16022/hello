@@ -2,7 +2,12 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>10 Physics Exam</title>
+<title>12 Physics Exam - LaTeX Renderer</title>
+
+<!-- KaTeX CSS and JS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 
 <style>
 body {
@@ -30,6 +35,11 @@ button {
   border: none;
   cursor: pointer;
   font-weight: bold;
+  border-radius: 4px;
+}
+
+button:hover {
+  background-color: #29b6f6;
 }
 
 .container h1,
@@ -40,11 +50,6 @@ button {
 
 .container p {
   line-height: 1.6;
-}
-
-.container img {
-  max-width: 100%;
-  margin: 15px 0;
 }
 
 /* Print Style */
@@ -62,47 +67,117 @@ button {
     color: black;
     background: white;
   }
+  
+  .container h1,
+  .container h2,
+  .container h3 {
+    color: #000;
+  }
+}
+
+#loading {
+  text-align: center;
+  padding: 40px;
+  font-size: 1.2em;
+  color: #4fc3f7;
+}
+
+.error {
+  color: #ff6b6b;
+  padding: 20px;
+  border: 1px solid #ff6b6b;
+  border-radius: 4px;
+}
+
+/* Style for math display */
+.math-display {
+  text-align: center;
+  margin: 20px 0;
+  padding: 10px;
+  background: rgba(79, 195, 247, 0.05);
+  border-radius: 4px;
+}
+
+@media print {
+  .math-display {
+    background: #f5f5f5;
+  }
 }
 </style>
-
-<!-- MathJax -->
-<script>
-window.MathJax = {
-  tex: { inlineMath: [['$', '$']], displayMath: [['$$', '$$']] }
-};
-</script>
-<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-
 </head>
 <body>
 
 <div class="container">
-  <button onclick="window.print()">Download PDF</button>
-  <div id="content">Loading question paper...</div>
+  <button onclick="window.print()">📄 Download PDF</button>
+  <div id="content">
+    <div id="loading">Loading question paper...</div>
+  </div>
 </div>
 
 <script>
+// Your Google Doc ID
 const docID = "1fmE8zXPFWwioae6uZuD4-_q4_uqSqWBavwviHknUu8g";
 const url = `https://docs.google.com/document/d/${docID}/export?format=html`;
 
-fetch(url)
-  .then(response => response.text())
-  .then(html => {
+async function loadAndRender() {
+  const contentDiv = document.getElementById('content');
+  
+  try {
+    // Fetch the Google Doc as HTML
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const html = await response.text();
 
+    // Parse the HTML
     const parser = new DOMParser();
     const doc = parser.parseFromString(html, "text/html");
-
-    document.getElementById("content").innerHTML = doc.body.innerHTML;
-
-    // Re-render math after content loads
-    if (window.MathJax) {
-      MathJax.typeset();
+    
+    // Get the body content
+    let contentHTML = doc.body.innerHTML;
+    
+    // Process any LaTeX content found in the document
+    // The Google Doc might have LaTeX in various formats
+    
+    // Method 1: Look for text that might contain LaTeX in $$ or $ delimiters
+    // This preserves any LaTeX that might be in the document as plain text
+    
+    // Set the content
+    contentDiv.innerHTML = contentHTML;
+    
+    // Now render any LaTeX using KaTeX
+    // This will find $...$ and $$...$$ in the text content
+    if (window.renderMathInElement) {
+      renderMathInElement(contentDiv, {
+        delimiters: [
+          {left: '$$', right: '$$', display: true},
+          {left: '$', right: '$', display: false},
+          {left: '\\(', right: '\\)', display: false},
+          {left: '\\[', right: '\\]', display: true}
+        ],
+        throwOnError: false,
+        errorCallback: function(error) {
+          console.warn('KaTeX error:', error);
+          // Don't show error messages in the content
+          return null;
+        }
+      });
     }
-  })
-  .catch(() => {
-    document.getElementById("content").innerText =
-      "Unable to load question paper.";
-  });
+    
+  } catch (error) {
+    console.error('Error loading content:', error);
+    contentDiv.innerHTML = `
+      <div class="error">
+        ❌ Unable to load question paper.<br>
+        Error: ${error.message}
+      </div>
+    `;
+  }
+}
+
+// Load when page is ready
+document.addEventListener('DOMContentLoaded', loadAndRender);
 </script>
 
 </body>
