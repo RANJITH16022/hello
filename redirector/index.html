@@ -14,86 +14,86 @@
         html, body {
             background: #000;
             color: #00ff41;
-            font-family: 'Courier New', Courier, monospace;
+            font-family: 'Consolas', 'Courier New', Courier, monospace;
+            font-size: 14px;
             min-height: 100vh;
             overflow: hidden;
         }
 
-        /* Top-right control bar */
+        /* Top-right prompt line */
         .bar {
             position: fixed;
             top: 14px;
             right: 14px;
             display: flex;
-            gap: 8px;
+            gap: 10px;
             align-items: center;
             z-index: 10;
         }
 
         #codeInput {
-            background: #000;
-            border: 1px solid #00ff41;
+            background: transparent;
+            border: none;
             color: #00ff41;
             font-family: inherit;
-            font-size: 13px;
-            padding: 6px 10px;
-            width: 160px;
+            font-size: inherit;
+            padding: 0;
+            width: 170px;
             outline: none;
             caret-color: #00ff41;
         }
 
         #codeInput::placeholder {
             color: #00ff41;
-            opacity: 0.5;
+            opacity: 0.45;
         }
 
-        #codeInput:focus {
-            box-shadow: 0 0 8px #00ff41;
-        }
-
+        /* "go" as plain text */
         #goButton {
-            background: #000;
-            border: 1px solid #00ff41;
+            background: transparent;
+            border: none;
             color: #00ff41;
             font-family: inherit;
-            font-size: 13px;
-            font-weight: bold;
-            padding: 6px 14px;
+            font-size: inherit;
+            padding: 0;
             cursor: pointer;
-            letter-spacing: 1px;
-            transition: all 0.15s;
+            opacity: 0.7;
+            transition: opacity 0.15s;
         }
 
         #goButton:hover {
-            background: #00ff41;
-            color: #000;
+            opacity: 1;
+            text-shadow: 0 0 6px #00ff41;
         }
 
         #goButton:active {
-            transform: scale(0.96);
+            opacity: 0.5;
         }
 
-        /* Status line */
+        /* Status line under the prompt */
         #status {
             position: fixed;
-            top: 52px;
+            top: 38px;
             right: 14px;
             font-size: 12px;
             color: #00ff41;
-            opacity: 0.8;
+            opacity: 0.6;
             z-index: 10;
+            text-align: right;
         }
 
         #status.error {
             color: #ff2e2e;
+            opacity: 0.9;
         }
 
-        /* Blinking cursor on the page */
+        /* Blinking cursor at bottom-left prompt */
         .cursor {
             position: fixed;
             bottom: 20px;
             left: 20px;
-            font-size: 14px;
+            font-size: 13px;
+            opacity: 0.7;
         }
         .cursor::after {
             content: '_';
@@ -103,15 +103,15 @@
             50% { opacity: 0; }
         }
 
-        /* Scanline effect */
+        /* Very subtle scanline overlay */
         body::before {
             content: '';
             position: fixed;
             inset: 0;
             background: repeating-linear-gradient(
                 to bottom,
-                rgba(0, 255, 65, 0.03) 0px,
-                rgba(0, 255, 65, 0.03) 1px,
+                rgba(0, 255, 65, 0.02) 0px,
+                rgba(0, 255, 65, 0.02) 1px,
                 transparent 1px,
                 transparent 3px
             );
