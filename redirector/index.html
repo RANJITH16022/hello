@@ -5,163 +5,151 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>redirector</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         html, body {
-            background: #000;
-            color: #00ff41;
-            font-family: 'Consolas', 'Courier New', Courier, monospace;
+            background: #0c0c0c;
+            color: #cccccc;
+            font-family: 'Cascadia Mono', 'Consolas', 'Courier New', monospace;
             font-size: 14px;
             min-height: 100vh;
             overflow: hidden;
         }
 
-        /* Top-right prompt line */
+        /* Top-right terminal prompt line */
         .bar {
             position: fixed;
-            top: 14px;
-            right: 14px;
+            top: 16px;
+            right: 16px;
             display: flex;
-            gap: 10px;
+            gap: 8px;
             align-items: center;
             z-index: 10;
+            white-space: nowrap;
         }
 
-        #codeInput {
-            background: transparent;
+        .prompt {
+            color: #cccccc;
+            opacity: 0.9;
+            user-select: none;
+        }
+
+        /* The typed text + blinking caret */
+        .line {
+            display: inline-flex;
+            align-items: center;
+            position: relative;
+        }
+
+        #typed {
+            color: #ffffff;
+            min-width: 1px;
+            white-space: pre;
+        }
+
+        /* Blinking block caret */
+        .caret {
+            display: inline-block;
+            width: 8px;
+            height: 15px;
+            background: #cccccc;
+            margin-left: 1px;
+            animation: blink 1.06s steps(1) infinite;
+        }
+
+        @keyframes blink {
+            0%, 50%   { opacity: 1; }
+            50.01%,100% { opacity: 0; }
+        }
+
+        /* Hidden real input for keyboard capture */
+        #hiddenInput {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+            width: 1px;
+            height: 1px;
             border: none;
-            color: #00ff41;
-            font-family: inherit;
-            font-size: inherit;
-            padding: 0;
-            width: 170px;
             outline: none;
-            caret-color: #00ff41;
-        }
-
-        #codeInput::placeholder {
-            color: #00ff41;
-            opacity: 0.45;
-        }
-
-        /* "go" as plain text */
-        #goButton {
             background: transparent;
-            border: none;
-            color: #00ff41;
-            font-family: inherit;
-            font-size: inherit;
-            padding: 0;
+            color: transparent;
+        }
+
+        /* "go" — plain text, tap target for mobile */
+        #goButton {
+            color: #cccccc;
             cursor: pointer;
-            opacity: 0.7;
+            padding: 2px 6px;
+            opacity: 0.65;
+            user-select: none;
             transition: opacity 0.15s;
         }
-
-        #goButton:hover {
-            opacity: 1;
-            text-shadow: 0 0 6px #00ff41;
-        }
-
-        #goButton:active {
-            opacity: 0.5;
-        }
+        #goButton:hover  { opacity: 1; }
+        #goButton:active { opacity: 0.4; }
 
         /* Status line under the prompt */
         #status {
             position: fixed;
-            top: 38px;
-            right: 14px;
+            top: 42px;
+            right: 16px;
             font-size: 12px;
-            color: #00ff41;
-            opacity: 0.6;
-            z-index: 10;
-            text-align: right;
-        }
-
-        #status.error {
-            color: #ff2e2e;
+            color: #6a9955;
             opacity: 0.9;
+            text-align: right;
+            z-index: 10;
         }
-
-        /* Blinking cursor at bottom-left prompt */
-        .cursor {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            font-size: 13px;
-            opacity: 0.7;
-        }
-        .cursor::after {
-            content: '_';
-            animation: blink 1s step-end infinite;
-        }
-        @keyframes blink {
-            50% { opacity: 0; }
-        }
-
-        /* Very subtle scanline overlay */
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background: repeating-linear-gradient(
-                to bottom,
-                rgba(0, 255, 65, 0.02) 0px,
-                rgba(0, 255, 65, 0.02) 1px,
-                transparent 1px,
-                transparent 3px
-            );
-            pointer-events: none;
-            z-index: 1;
-        }
+        #status.error { color: #f44747; }
     </style>
 </head>
 <body>
+
     <div class="bar">
-        <input
-            type="text"
-            id="codeInput"
-            placeholder="enter the code"
-            autocomplete="off"
-            spellcheck="false"
-        >
-        <button id="goButton">GO</button>
+        <span class="prompt">PS C:\&gt;</span>
+        <span class="line">
+            <span id="typed"></span><span class="caret"></span>
+        </span>
+        <span id="goButton">go</span>
     </div>
+
     <div id="status"></div>
-    <div class="cursor">root@redirector:~$</div>
+
+    <!-- Invisible input to capture real typing (mobile keyboards too) -->
+    <input id="hiddenInput" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" />
 
     <script>
         // ===== CONFIG =====
-        const SHEET_ID = '1B7kBBPYRXXfS2vWUNztGN6tOiCnOaPWYlRgrQQ5S5q4';
+        const SHEET_ID   = '1B7kBBPYRXXfS2vWUNztGN6tOiCnOaPWYlRgrQQ5S5q4';
         const SHEET_NAME = 'Sheet1';
-        const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${SHEET_NAME}`;
+        const SHEET_URL  = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${SHEET_NAME}`;
         // ==================
 
         const codeToLink = {};
         let loading = true;
+        let buffer  = '';   // what the user has typed
 
-        const inputEl = document.getElementById('codeInput');
+        const typedEl  = document.getElementById('typed');
+        const inputEl  = document.getElementById('hiddenInput');
         const statusEl = document.getElementById('status');
 
         function setStatus(msg, isError = false) {
-            statusEl.textContent = msg;
-            statusEl.classList.toggle('error', isError);
+            statusEl.textContent = msg || '';
+            statusEl.classList.toggle('error', !!isError);
         }
 
+        function render() {
+            typedEl.textContent = buffer;
+        }
+
+        // ---------- Fetch the sheet ----------
         async function fetchSheetData() {
             try {
                 setStatus('loading...');
-                const res = await fetch(SHEET_URL);
+                const res  = await fetch(SHEET_URL);
                 const text = await res.text();
 
-                // Strip the google.visualization.Query.setResponse(...) wrapper
                 const start = text.indexOf('{');
-                const end = text.lastIndexOf('}') + 1;
-                const data = JSON.parse(text.substring(start, end));
+                const end   = text.lastIndexOf('}') + 1;
+                const data  = JSON.parse(text.substring(start, end));
 
                 data.table.rows.forEach(row => {
                     if (!row.c) return;
@@ -173,7 +161,7 @@
                 });
 
                 loading = false;
-                setStatus(`ready (${Object.keys(codeToLink).length} codes)`);
+                setStatus('');
                 checkUrlParam();
             } catch (err) {
                 loading = false;
@@ -182,47 +170,108 @@
             }
         }
 
+        // ---------- Redirect ----------
         function performRedirect() {
-            const code = inputEl.value.trim();
+            const code = buffer.trim();
             if (!code) { setStatus('enter a code', true); return; }
             if (loading) { setStatus('still loading...', true); return; }
 
             const link = codeToLink[code];
             if (!link) {
                 setStatus('invalid code', true);
-                inputEl.select();
+                buffer = '';
+                render();
                 return;
             }
+
             setStatus('redirecting...');
             let url = link;
             if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
             window.location.href = url;
         }
 
+        // ---------- Keyboard handling (desktop) ----------
+        document.addEventListener('keydown', e => {
+            // If focus is in the hidden input, let the input event handle it
+            if (document.activeElement === inputEl && e.key !== 'Enter') return;
+
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                performRedirect();
+                return;
+            }
+            if (e.key === 'Backspace') {
+                e.preventDefault();
+                buffer = buffer.slice(0, -1);
+                render();
+                syncInput();
+                return;
+            }
+            if (e.key === 'Escape') {
+                buffer = '';
+                render();
+                syncInput();
+                return;
+            }
+            if (e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {
+                e.preventDefault();
+                buffer += e.key;
+                render();
+                syncInput();
+            }
+        });
+
+        // ---------- Hidden input (for mobile soft keyboards) ----------
+        function syncInput() {
+            inputEl.value = buffer;
+        }
+
+        // Keep buffer in sync when typing via mobile keyboard
+        inputEl.addEventListener('input', () => {
+            buffer = inputEl.value;
+            render();
+        });
+
+        inputEl.addEventListener('keydown', e => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                performRedirect();
+            }
+        });
+
+        // Refocus hidden input whenever user taps anywhere
+        document.addEventListener('click', () => {
+            inputEl.focus({ preventScroll: true });
+        });
+
+        // Auto-focus on load
+        window.addEventListener('load', () => {
+            inputEl.focus({ preventScroll: true });
+        });
+
+        // ---------- Go button (mobile tap) ----------
+        document.getElementById('goButton').addEventListener('click', e => {
+            e.stopPropagation();
+            performRedirect();
+        });
+
+        // ---------- URL param support ----------
         function checkUrlParam() {
             const params = new URLSearchParams(window.location.search);
             let code = params.get('code');
-
-            // Support /redirector/code=1234 path style
             if (!code) {
                 const m = window.location.pathname.match(/code=([^\/]+)/);
                 if (m) code = decodeURIComponent(m[1]);
             }
-
             if (code) {
-                inputEl.value = code;
+                buffer = code;
+                render();
+                syncInput();
                 if (!loading) performRedirect();
             }
         }
 
-        document.getElementById('goButton').addEventListener('click', performRedirect);
-        inputEl.addEventListener('keydown', e => {
-            if (e.key === 'Enter') performRedirect();
-        });
-        inputEl.addEventListener('input', () => {
-            if (statusEl.classList.contains('error')) setStatus('');
-        });
-
+        // ---------- Init ----------
         fetchSheetData();
     </script>
 </body>
