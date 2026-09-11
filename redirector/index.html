@@ -11,39 +11,25 @@
             background: #0c0c0c;
             color: #cccccc;
             font-family: 'Cascadia Mono', 'Consolas', 'Courier New', monospace;
-            font-size: 14px;
+            font-size: 15px;
             min-height: 100vh;
             overflow: hidden;
         }
 
-        /* Top-right terminal prompt line */
+        /* Prompt line at top-left */
         .bar {
             position: fixed;
             top: 16px;
-            right: 16px;
+            left: 16px;
             display: flex;
-            gap: 8px;
             align-items: center;
+            gap: 8px;
             z-index: 10;
             white-space: nowrap;
         }
 
-        .prompt {
-            color: #cccccc;
-            opacity: 0.9;
-            user-select: none;
-        }
-
-        /* The typed text + blinking caret */
-        .line {
-            display: inline-flex;
-            align-items: center;
-            position: relative;
-        }
-
         #typed {
             color: #ffffff;
-            min-width: 1px;
             white-space: pre;
         }
 
@@ -51,18 +37,17 @@
         .caret {
             display: inline-block;
             width: 8px;
-            height: 15px;
+            height: 16px;
             background: #cccccc;
-            margin-left: 1px;
             animation: blink 1.06s steps(1) infinite;
         }
 
         @keyframes blink {
-            0%, 50%   { opacity: 1; }
-            50.01%,100% { opacity: 0; }
+            0%, 50%    { opacity: 1; }
+            50.01%,100%{ opacity: 0; }
         }
 
-        /* Hidden real input for keyboard capture */
+        /* Hidden input just for mobile keyboard */
         #hiddenInput {
             position: absolute;
             opacity: 0;
@@ -80,22 +65,17 @@
             color: #cccccc;
             cursor: pointer;
             padding: 2px 6px;
-            opacity: 0.65;
+            opacity: 0.55;
             user-select: none;
-            transition: opacity 0.15s;
         }
-        #goButton:hover  { opacity: 1; }
-        #goButton:active { opacity: 0.4; }
+        #goButton:active { opacity: 1; }
 
-        /* Status line under the prompt */
         #status {
             position: fixed;
-            top: 42px;
-            right: 16px;
+            top: 44px;
+            left: 16px;
             font-size: 12px;
             color: #6a9955;
-            opacity: 0.9;
-            text-align: right;
             z-index: 10;
         }
         #status.error { color: #f44747; }
@@ -104,16 +84,11 @@
 <body>
 
     <div class="bar">
-        <span class="prompt">PS C:\&gt;</span>
-        <span class="line">
-            <span id="typed"></span><span class="caret"></span>
-        </span>
+        <span id="typed"></span><span class="caret"></span>
         <span id="goButton">go</span>
     </div>
 
     <div id="status"></div>
-
-    <!-- Invisible input to capture real typing (mobile keyboards too) -->
     <input id="hiddenInput" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" />
 
     <script>
@@ -125,7 +100,7 @@
 
         const codeToLink = {};
         let loading = true;
-        let buffer  = '';   // what the user has typed
+        let buffer  = '';
 
         const typedEl  = document.getElementById('typed');
         const inputEl  = document.getElementById('hiddenInput');
@@ -135,18 +110,14 @@
             statusEl.textContent = msg || '';
             statusEl.classList.toggle('error', !!isError);
         }
+        function render() { typedEl.textContent = buffer; }
+        function syncInput() { inputEl.value = buffer; }
 
-        function render() {
-            typedEl.textContent = buffer;
-        }
-
-        // ---------- Fetch the sheet ----------
         async function fetchSheetData() {
             try {
                 setStatus('loading...');
                 const res  = await fetch(SHEET_URL);
                 const text = await res.text();
-
                 const start = text.indexOf('{');
                 const end   = text.lastIndexOf('}') + 1;
                 const data  = JSON.parse(text.substring(start, end));
@@ -155,9 +126,7 @@
                     if (!row.c) return;
                     const code = row.c[0] && row.c[0].v != null ? String(row.c[0].v).trim() : '';
                     const link = row.c[1] && row.c[1].v != null ? String(row.c[1].v).trim() : '';
-                    if (code && link && code.toLowerCase() !== 'code') {
-                        codeToLink[code] = link;
-                    }
+                    if (code && link && code.toLowerCase() !== 'code') codeToLink[code] = link;
                 });
 
                 loading = false;
@@ -170,92 +139,50 @@
             }
         }
 
-        // ---------- Redirect ----------
         function performRedirect() {
             const code = buffer.trim();
-            if (!code) { setStatus('enter a code', true); return; }
-            if (loading) { setStatus('still loading...', true); return; }
+            if (!code)     { setStatus('enter a code', true); return; }
+            if (loading)   { setStatus('still loading...', true); return; }
 
             const link = codeToLink[code];
             if (!link) {
                 setStatus('invalid code', true);
-                buffer = '';
-                render();
+                buffer = ''; render(); syncInput();
                 return;
             }
-
             setStatus('redirecting...');
             let url = link;
             if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
             window.location.href = url;
         }
 
-        // ---------- Keyboard handling (desktop) ----------
+        // Desktop keyboard
         document.addEventListener('keydown', e => {
-            // If focus is in the hidden input, let the input event handle it
             if (document.activeElement === inputEl && e.key !== 'Enter') return;
 
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                performRedirect();
-                return;
-            }
-            if (e.key === 'Backspace') {
-                e.preventDefault();
-                buffer = buffer.slice(0, -1);
-                render();
-                syncInput();
-                return;
-            }
-            if (e.key === 'Escape') {
-                buffer = '';
-                render();
-                syncInput();
-                return;
-            }
+            if (e.key === 'Enter')     { e.preventDefault(); performRedirect(); return; }
+            if (e.key === 'Backspace') { e.preventDefault(); buffer = buffer.slice(0, -1); render(); syncInput(); return; }
+            if (e.key === 'Escape')    { buffer = ''; render(); syncInput(); return; }
             if (e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {
                 e.preventDefault();
-                buffer += e.key;
-                render();
-                syncInput();
+                buffer += e.key; render(); syncInput();
             }
         });
 
-        // ---------- Hidden input (for mobile soft keyboards) ----------
-        function syncInput() {
-            inputEl.value = buffer;
-        }
-
-        // Keep buffer in sync when typing via mobile keyboard
-        inputEl.addEventListener('input', () => {
-            buffer = inputEl.value;
-            render();
-        });
-
+        // Mobile keyboard
+        inputEl.addEventListener('input', () => { buffer = inputEl.value; render(); });
         inputEl.addEventListener('keydown', e => {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                performRedirect();
-            }
+            if (e.key === 'Enter') { e.preventDefault(); performRedirect(); }
         });
 
-        // Refocus hidden input whenever user taps anywhere
-        document.addEventListener('click', () => {
-            inputEl.focus({ preventScroll: true });
-        });
+        document.addEventListener('click', () => inputEl.focus({ preventScroll: true }));
+        window.addEventListener('load', () => inputEl.focus({ preventScroll: true }));
 
-        // Auto-focus on load
-        window.addEventListener('load', () => {
-            inputEl.focus({ preventScroll: true });
-        });
-
-        // ---------- Go button (mobile tap) ----------
         document.getElementById('goButton').addEventListener('click', e => {
             e.stopPropagation();
             performRedirect();
         });
 
-        // ---------- URL param support ----------
         function checkUrlParam() {
             const params = new URLSearchParams(window.location.search);
             let code = params.get('code');
@@ -264,14 +191,11 @@
                 if (m) code = decodeURIComponent(m[1]);
             }
             if (code) {
-                buffer = code;
-                render();
-                syncInput();
+                buffer = code; render(); syncInput();
                 if (!loading) performRedirect();
             }
         }
 
-        // ---------- Init ----------
         fetchSheetData();
     </script>
 </body>
